@@ -38,7 +38,7 @@ function todos (state = [], action) {
   return state
 }
 
-function createStore () {
+function createStore (reducer) {
   let state
   let listeners = []
 
@@ -52,8 +52,14 @@ function createStore () {
     }
   }
 
+  const dispatch = (action) => {
+    state = reducer(state, action)
+    listeners.forEach((listener) => listener())
+  }
+
   return {
     getState,
-    subscribe
+    subscribe,
+    dispatch
   }
 }
